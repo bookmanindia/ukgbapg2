@@ -1,0 +1,329 @@
+<html>
+<title>Alok-Mittal-Draw</title>
+<head>
+    <style>
+        body {
+            height: 100vh;
+            overflow: hidden;
+        }
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .draw-image{
+            position: absolute;
+            top:2px;
+            left:50%;
+            transform: translateX(-50%);
+            width:auto;     
+            height:80vh;
+        }
+        .controls{
+            display: flex;
+            background-color: rgb(235, 235, 235);
+        }
+        .color-container{
+            padding:2%;
+            width: 70%;
+            white-space: nowrap; 
+            overflow-x: auto;
+            height: auto;
+        }
+        .color{
+            display: inline-block;
+            width:80px;
+            height:80px;
+            border-radius:50%;
+            margin: 0 5px;
+        }
+        .slider-container{
+            padding:2%;
+            width:30%;
+        }
+        .icon{
+            width: 100%;
+            padding: 0 5px;
+        }
+        .slider {
+            display: none;
+            bottom: 50px;
+            background-color: rgba(0, 0, 0, 0.562);
+        }
+        #sliderId{
+            position: absolute;
+            bottom: 15vh;
+    transform: scale(2.5);
+    }
+    </style>
+    <body onload="init()">
+        <canvas id="can" width="" height="" style="border:3px solid; touch-action: none;"></canvas>
+        <img id="shape" class="draw-image" style="touch-action: none;" src="./ukgbapg2.png" alt="img" onmousemove="myFunction(event, 'move')" onmousedown="myFunction(event, 'down')" >
+        <div class="controls">
+            <div class="color-container">
+                <div class="color" style="background:#FFCC99;" id="wheat" onclick="color(this)"></div>
+                <div class="color" style="background:#FFFF00;" id="yellow" onclick="color(this)"></div>
+                <div class="color" style="background:#FFD700;" id="gold" onclick="color(this)"></div>
+                <div class="color" style="background:#DAA520;" id="goldenrod" onclick="color(this)"></div>
+                <div class="color" style="background:#D2691E;" id="chololate" onclick="color(this)"></div>
+                <div class="color" style="background:#FF6347;" id="tomato" onclick="color(this)"></div>
+                <div class="color" style="background:#FF0000;" id="red" onclick="color(this)"></div>
+                <div class="color" style="background:#800000;" id="maroon" onclick="color(this)"></div>
+                <div class="color" style="background:#9900CC;" id="purple" onclick="color(this)"></div>
+                <div class="color" style="background:#000080;" id="navy" onclick="color(this)"></div>
+                <div class="color" style="background:#0000FF;" id="blue" onclick="color(this)"></div>
+                <div class="color" style="background:#00BFFF;" id="deepskyblue" onclick="color(this)"></div>
+                <div class="color" style="background:#00FFFF;" id="cyan" onclick="color(this)"></div>
+                <div class="color" style="background:#5F9EA0;" id="cadetblue" onclick="color(this)"></div>
+                <div class="color" style="background:#055205;" id="deepgreen" onclick="color(this)"></div>
+                <div class="color" style="background:#008000;" id="green" onclick="color(this)"></div>
+                <div class="color" style="background:#9ACD32;" id="yellowgreen" onclick="color(this)"></div>
+                <div class="color" style="background:#808000;" id="olive" onclick="color(this)"></div>
+                <div class="color" style="background:#808080;" id="gray" onclick="color(this)"></div>
+                <div class="color" style="background:#000000;" id="black" onclick="color(this)"></div>
+               
+
+
+
+            </div>
+            <div class="slider-container">
+                <div class="sider" >
+                    <input id="sliderId" style="display: none;" type="range" min="1" max="50" value="1" >
+                </div>
+                <div class="color" onclick="toggleslider()"><img class="icon" src="./line-width-icon-256.png" alt=""></div>
+                <div class="color" onClick="location.href=location.href"><img class="icon" src="./refresh-icon-android-10.jpg" alt=""></div>
+            </div>
+        </div>
+        <!-- <p1 style= "position:absolute;top:3%;left:5%; font-size:500%;">Colour</p1>
+            <p1 style="position:absolute;top:3%;left: 70%;font-size:500%;">Width</p1>
+            
+            <div style="position:absolute;top:10%;left:5%;width:80px;height:80px;background:green; border-radius:50%;" id="green" onclick="color(this)"></div>
+            <div style="position:absolute;top:15%;left:5%;width:80px;height:80px;background:blue; border-radius:50%;" id="blue" onclick="color(this)"></div>
+            <div style="position:absolute;top:20%;left:5%;width:80px;height:80px;background:red; border-radius:50%;" id="red" onclick="color(this)"></div>
+            <div style="position:absolute;top:25%;left:5%;width:80px;height:80px;background:yellow; border-radius:50%;" id="yellow" onclick="color(this)"></div>
+            <div style="position:absolute;top:30%;left:5%;width:80px;height:80px;background:orange; border-radius:50%;" id="orange" onclick="color(this)"></div>       
+            <div style="position:absolute;top:35%;left:5%;width:80px;height:80px;background:purple; border-radius:50%;" id="purple" onclick="color(this)"></div>
+            <div style="position:absolute;top:40%;left:5%;width:80px;height:80px;background:cyan; border-radius:50%;" id="cyan" onclick="color(this)"></div>
+            <div style="position:absolute;top:45%;left:5%;width:80px;height:80px;background:black; border-radius:50%;" id="black" onclick="color(this)"></div>
+            <div style="position:absolute;top:50%;left:5%;width:80px;height:80px;background:green; border-radius:50%;" id="green" onclick="color(this)"></div>
+            <div style="position:absolute;top:55%;left:5%;width:80px;height:80px;background:blue; border-radius:50%;" id="blue" onclick="color(this)"></div>
+            <div style="position:absolute;top:60%;left:5%;width:80px;height:80px;background:red; border-radius:50%;" id="red" onclick="color(this)"></div>
+            <div style="position:absolute;top:65%;left:5%;width:80px;height:80px;background:yellow; border-radius:50%;" id="yellow" onclick="color(this)"></div>
+            <div style="position:absolute;top:70%;left:5%;width:80px;height:80px;background:orange; border-radius:50%;" id="orange" onclick="color(this)"></div>       
+            <div style="position:absolute;top:75%;left:5%;width:80px;height:80px;background:purple; border-radius:50%;" id="purple" onclick="color(this)"></div>
+            <div style="position:absolute;top:80%;left:5%;width:80px;height:80px;background:cyan; border-radius:50%;" id="cyan" onclick="color(this)"></div>
+            <div style="position:absolute;top:85%;left:5%;width:80px;height:80px;background:black; border-radius:50%;" id="black" onclick="color(this)"></div>
+            <div style="position:absolute;top:90%;left:5%;width:80px;height:80px;background:green; border-radius:50%;" id="green" onclick="color(this)"></div>
+            <div style="position:absolute;top:95%;left:5%;width:80px;height:80px;background:blue; border-radius:50%;" id="blue" onclick="color(this)"></div>
+            <div style="position:absolute;top:100%;left:5%;width:80px;height:80px;background:red; border-radius:50%;" id="red" onclick="color(this)"></div>
+            <div style="position:absolute;top:105%;left:5%;width:80px;height:80px;background:yellow; border-radius:50%;" id="yellow" onclick="color(this)"></div>
+            <div style="position:absolute;top:110%;left:5%;width:80px;height:80px;background:orange; border-radius:50%;" id="orange" onclick="color(this)"></div>       
+            <div style="position:absolute;top:115%;left:5%;width:80px;height:80px;background:purple; border-radius:50%;" id="purple" onclick="color(this)"></div>
+            <div style="position:absolute;top:120%;left:5%;width:80px;height:80px;background:#ffffff; border-color: black; border-radius:50%;" id="white" onclick="color(this)"></div>
+            <div style="position:absolute;top:125%;left:5%;width:80px;height:80px;background:black; border-radius:50%;" id="black" onclick="color(this)"></div>
+            <div style="position:absolute;top:10%;left:65%;width:120px;height:20px;background:rgb(83, 83, 83);" id="black" onclick= "y=25"></div>
+            <div style="position:absolute;top:10%;left:82%;width:120px;height:50px;background:rgb(83, 83, 83);" id="black" onclick= "y=60"></div>
+            <p1 style="position:absolute;top:90%;left:5%; font-size:500%;" onClick="location.href=location.href">Refresh</p1> 
+        -->  <script type="text/javascript">
+            var canvas,slider, ctx, flag = false,
+            prevX = 0,
+            currX = 0,
+            prevY = 0,
+            currY = 0,
+            dot_flag = false;
+            slider = document.getElementById("sliderId");
+            var x = "black",
+            y = 4;
+            var sli = document.getElementById("sliderId");;
+            function myFunction(e, action) {
+                console.log(action);
+                findxy(action, e);
+            }
+            function init() {
+
+                slider = document.getElementById("sliderId");
+                sli.style.display = "none";
+                y = slider.value; 
+                canvas = document.getElementById('can');
+                ctx = canvas.getContext("2d");
+                canvas.setAttribute("width",  window.innerWidth + "px");
+                canvas.setAttribute("height",  window.innerHeight*0.9 + "px");
+                w = canvas.width;
+                h = canvas.height;
+
+                document.getElementById("shape").addEventListener("pointermove", function (e) {
+                    findxy('move', e);
+                }, false);
+                document.getElementById("shape").addEventListener("pointerdown", function (e) {
+                    findxy('down', e)
+                }, false);
+                document.getElementById("shape").addEventListener("pointerup", function (e) {
+                    findxy('up', e)
+                }, false);
+                
+                canvas.addEventListener("pointermove", function (e) {
+                    findxy('move', e)   
+                }, false);
+                canvas.addEventListener("pointerdown", function (e) {
+                    findxy('down', e)
+                }, false);
+                canvas.addEventListener("pointerup", function (e) {
+                    findxy('up', e)
+                }, false);
+                canvas.addEventListener("pointerout", function (e) {
+                    findxy('out', e)
+                }, false);
+            }
+            function toggleslider() {
+                sli = document.getElementById("sliderId"); 
+                if (sli.style.display === "none") {
+                    sli.style.display = "block";
+                } else {
+                    sli.style.display = "none";
+                }
+            }
+            slider.oninput = function() { 
+                console.log(slider.value);
+                y = slider.value;
+            }
+            function color(obj) {
+                switch (obj.id) {
+                    case "wheat":
+                    x = "#FFCC99";
+                    break;
+                    case "yellow":
+                    x = "yellow";
+                    break;
+                    case "gold":
+                    x = "#FFD700";
+                    break;
+                    case "goldenrod":
+                    x = "#DAA520";
+                    break;
+                    case "chololate":
+                    x = "#D2691E";
+                    break;
+                    case "tomato":
+                    x = "#FF6347";
+                    break;
+                    case "red":
+                    x = "#ff0000";
+                    break;
+                    case "maroon":
+                    x = "#800000";
+                    break;
+                    
+                    case "purple":
+                    x = "#9900cc";
+                    break;
+                    case "navy":
+                    x = "#000080";
+                    break;
+                    case "blue":
+                    x = "#0000FF";
+                    break;
+                    case "deepskyblue":
+                    x = "#00BFFF";
+                    break;
+                    case "cyan":
+                    x = "#00FFFF";
+                    break;
+                    case "cadetblue":
+                    x = "#5F9EA0";
+                    break;
+                    case "purple":
+                    x = "purple";
+                    break;
+                    case "cyan":
+                    x = "cyan";
+                    break;
+                    
+                    case "deepgreen":
+                    x = "#055205";
+                    break;
+                    case "green":
+                    x = "#008000";
+                    break;
+                    case "yellowgreen":
+                    x = "#9ACD32";
+                    break;
+                    case "olive":
+                    x = "#808000";
+                    break;
+                    case "gray":
+                    x = "#808080";
+                    break;
+                    case "black":
+                    x = "black";
+                 
+                    
+                    
+                    
+                    
+                }
+                // if (x == "white") y = 15;//
+                //else y = 4;//
+                
+            }
+            
+            function draw() {
+                ctx.beginPath();
+                ctx.moveTo(prevX, prevY);
+                ctx.lineTo(currX, currY);
+                ctx.strokeStyle = x;
+                ctx.lineWidth = y;
+                ctx.stroke();
+                ctx.lineCap = 'round'; // draw round line //
+                ctx.closePath();
+            }
+            
+            function erase() {
+                var m = confirm("Want to clear");
+                if (m) {
+                    ctx.clearRect(0, 0, w, h);
+                    document.getElementById("canvasimg").style.display = "none";
+                }
+            }
+            
+            function save() {
+                document.getElementById("canvasimg").style.border = "2px solid";
+                var dataURL = canvas.toDataURL();
+                document.getElementById("canvasimg").src = dataURL;
+                document.getElementById("canvasimg").style.display = "inline";
+            }
+            
+            function findxy(res, e) {
+                if (res == 'down') {
+                    ctx.cl
+                    prevX = currX;
+                    prevY = currY;
+                    currX = e.clientX - canvas.offsetLeft;
+                    currY = e.clientY - canvas.offsetTop;
+                    console.log(currX, currY);
+                    flag = true;
+                    dot_flag = true;
+                    if (dot_flag) {
+                        ctx.beginPath();
+                        ctx.fillStyle = x;
+                        ctx.fillRect(currX, currY, 2, 2);
+                        ctx.closePath();
+                        dot_flag = false;
+                    }
+                }
+                if (res == 'up' || res == "out") {
+                    flag = false;
+                }
+                if (res == 'move') {
+
+                    if (flag) {
+                        prevX = currX;
+                        prevY = currY;
+                        currX = e.clientX - canvas.offsetLeft;
+                        currY = e.clientY - canvas.offsetTop;
+                        draw();
+                    }
+                }
+            }
+        </script>
+    </body>
+    </html>
